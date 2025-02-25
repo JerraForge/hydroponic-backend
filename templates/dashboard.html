@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel użytkownika</title>
+</head>
+
+<body>
+    <h1>Witaj w swoim panelu, {{ user.username }}!</h1>
+    
+    <h2>Twoje systemy hydroponiczne</h2>
+
+    <h3>Dodaj nowy system hydroponiczny</h3>
+    <form method="post" action="{% url 'add_system' %}">
+        {% csrf_token %}
+        <label for="name">Nazwa:</label>
+        <input type="text" id="name" name="name" required>
+    
+        <label for="location">Lokalizacja:</label>
+        <input type="text" id="location" name="location">
+
+        <button type="submit">Dodaj system</button>
+    </form>
+
+    
+    {% if systems %}
+        <ul>
+            {% for system in systems %}
+                <li>
+                    <a href="{% url 'system_detail' system.id %}">{{ system.name }}</a>
+                    (lokalizacja: {{ system.location }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nie masz jeszcze żadnych systemów hydroponicznych.</p>
+        <a href="#">Dodaj nowy system</a>
+    {% endif %}
+
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Wyloguj się</button>
+    </form>    
+</body>
+</html>

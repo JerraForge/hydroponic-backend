@@ -64,7 +64,7 @@ ROOT_URLCONF = 'hydroponic.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,3 +151,16 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,  # Nowy refresh token po każdym odświeżeniu
     "BLACKLIST_AFTER_ROTATION": True,  # Stary refresh token jest nieważny
 }
+
+
+
+# Używamy domyślnego backendu uwierzytelniania Django
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Po zalogowaniu użytkownik zostanie przekierowany na stronę dashboard
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+# Po wylogowaniu użytkownik zostanie przekierowany na stronę login
+LOGOUT_REDIRECT_URL = '/accounts/login/'

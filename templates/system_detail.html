@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ system.name }} - Szczegóły</title>
+</head>
+
+<body>
+    <h1>Szczegóły systemu: {{ system.name }}</h1>
+    <p><strong>Lokalizacja:</strong> {{ system.location }}</p>
+
+    <h2>Ostatnie pomiary</h2>
+    {% if measurements %}
+        <ul>
+            {% for measurement in measurements %}
+                <li>
+                    <strong>Data:</strong> {{ measurement.timestamp }} |
+                    <strong>pH:</strong> {{ measurement.ph }} |
+                    <strong>Temperatura:</strong> {{ measurement.temperature }}°C |
+                    <strong>TDS:</strong> {{ measurement.tds }} ppm
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak pomiarów dla tego systemu.</p>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}">Powrót do panelu</a>
+</body>
+</html>
