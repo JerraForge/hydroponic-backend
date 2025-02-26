@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
-from api.views import register_view, dashboard_view  # Importujemy tylko te widoki, które są faktycznie używane
+from api.views import register_view, dashboard_view 
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 
 urlpatterns = [
     # Panel administratora

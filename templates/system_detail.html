@@ -42,8 +42,9 @@
         <button type="submit">Filtruj</button>
     </form>
 
+    <!-- Lista pomiarów -->
     {% if measurements %}
-        <ul>
+        <ul id="measurements-list">
             {% for measurement in measurements %}
                 <li>
                     <strong>Data:</strong> {{ measurement.timestamp }}
@@ -53,33 +54,53 @@
                 </li>
             {% endfor %}
         </ul>
-        
+
+        <!-- PAGINACJA -->
         <!-- PAGINACJA -->
         <div>
             {% if measurements.has_other_pages %}
                 {% if measurements.has_previous %}
-                    <a href="?page=1&{{ request.GET.urlencode }}">⏮ Pierwsza</a>
-                    <a href="?page={{ measurements.previous_page_number }}&{{ request.GET.urlencode }}">⬅ Poprzednia</a>
+                    <a href="?page=1&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">⏮ Pierwsza</a>
+                    <a href="?page={{ measurements.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">⬅ Poprzednia</a>
                 {% endif %}
 
                 <span>Strona {{ measurements.number }} z {{ measurements.paginator.num_pages }}</span>
 
                 {% if measurements.has_next %}
-                    <a href="?page={{ measurements.next_page_number }}&{{ request.GET.urlencode }}">Następna ➡</a>
-                    <a href="?page={{ measurements.paginator.num_pages }}&{{ request.GET.urlencode }}">Ostatnia ⏭</a>
+                    <a href="?page={{ measurements.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Następna ➡</a>
+                    <a href="?page={{ measurements.paginator.num_pages }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Ostatnia ⏭</a>
                 {% endif %}
             {% endif %}
         </div>
+
     {% else %}
         <p>Brak pomiarów dla tego systemu.</p>
     {% endif %}
 
-    <!-- Dodawanie symulowanego czujnika -->
+    <!-- Dodawanie symulowanego pomiaru -->
     <h3>Symulacja czujnika</h3>
-    <form method="POST" action="{% url 'add_sensor' system.id %}">
-        {% csrf_token %}
-        <button type="submit">Dodaj symulowany czujnik</button>
-    </form>
+    <button id="add-sensor-btn" data-url="{% url 'add_sensor' system.id %}">Dodaj symulowany pomiar</button>
+
+    <script>
+    document.getElementById("add-sensor-btn").addEventListener("click", function() {
+        var url = this.getAttribute("data-url");
+
+        fetch(url, { method: "POST", headers: { "X-CSRFToken": "{{ csrf_token }}" }})
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, "text/html");
+                    var newMeasurements = doc.getElementById("measurements-list").innerHTML;
+                    document.getElementById("measurements-list").innerHTML = newMeasurements;
+                });
+            }
+        });
+    });
+    </script>
 
     <!-- Usuwanie systemu -->
     <h3>Usuń ten system</h3>

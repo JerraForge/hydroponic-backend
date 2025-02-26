@@ -26,7 +26,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path("dashboard/", dashboard_view, name="dashboard"),
     path("system/<int:system_id>/", system_detail_view, name="system_detail"), 
-    path("system/add/", add_system, name="add_system"),  # Zmiana z "add-system/"
-    path('system/<int:system_id>/add-sensor/', add_sensor, name='add_sensor'),  # Zmiana na "add-sensor/"
+    path("system/add/", add_system, name="add_system"),  
+    path('system/<int:system_id>/add-sensor/', add_sensor, name='add_sensor'),  
     path('system/<int:system_id>/delete/', delete_system, name='delete_system'),
 ]
