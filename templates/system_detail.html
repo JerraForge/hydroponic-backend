@@ -10,20 +10,83 @@
     <p><strong>Lokalizacja:</strong> {{ system.location }}</p>
 
     <h2>Ostatnie pomiary</h2>
+
+    <!-- Filtry -->
+    <form method="GET">
+        <label for="start_date">Data od:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+
+        <label for="end_date">Data do:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+
+        <h3>Wybierz, które wartości chcesz wyświetlić:</h3>
+        <label><input type="checkbox" name="show_ph" {% if show_ph %}checked{% endif %}> pH</label>
+        <label><input type="checkbox" name="show_temperature" {% if show_temperature %}checked{% endif %}> Temperatura</label>
+        <label><input type="checkbox" name="show_tds" {% if show_tds %}checked{% endif %}> TDS</label>
+
+        <h3>Filtruj wartości (opcjonalne)</h3>
+        <label for="filter_type">Filtruj według:</label>
+        <select name="filter_type" id="filter_type">
+            <option value="" {% if not filter_type %}selected{% endif %}>Brak</option>
+            <option value="ph" {% if filter_type == 'ph' %}selected{% endif %}>pH</option>
+            <option value="temperature" {% if filter_type == 'temperature' %}selected{% endif %}>Temperatura</option>
+            <option value="tds" {% if filter_type == 'tds' %}selected{% endif %}>TDS</option>
+        </select>
+
+        <label for="min_value">Wartość od:</label>
+        <input type="number" step="0.1" id="min_value" name="min_value" value="{{ min_value }}">
+
+        <label for="max_value">Wartość do:</label>
+        <input type="number" step="0.1" id="max_value" name="max_value" value="{{ max_value }}">
+
+        <button type="submit">Filtruj</button>
+    </form>
+
     {% if measurements %}
         <ul>
             {% for measurement in measurements %}
                 <li>
-                    <strong>Data:</strong> {{ measurement.timestamp }} |
-                    <strong>pH:</strong> {{ measurement.ph }} |
-                    <strong>Temperatura:</strong> {{ measurement.temperature }}°C |
-                    <strong>TDS:</strong> {{ measurement.tds }} ppm
+                    <strong>Data:</strong> {{ measurement.timestamp }}
+                    {% if show_ph %} | <strong>pH:</strong> {{ measurement.ph }}{% endif %}
+                    {% if show_temperature %} | <strong>Temperatura:</strong> {{ measurement.temperature }}°C{% endif %}
+                    {% if show_tds %} | <strong>TDS:</strong> {{ measurement.tds }} ppm{% endif %}
                 </li>
             {% endfor %}
         </ul>
+        
+        <!-- PAGINACJA -->
+        <div>
+            {% if measurements.has_other_pages %}
+                {% if measurements.has_previous %}
+                    <a href="?page=1&{{ request.GET.urlencode }}">⏮ Pierwsza</a>
+                    <a href="?page={{ measurements.previous_page_number }}&{{ request.GET.urlencode }}">⬅ Poprzednia</a>
+                {% endif %}
+
+                <span>Strona {{ measurements.number }} z {{ measurements.paginator.num_pages }}</span>
+
+                {% if measurements.has_next %}
+                    <a href="?page={{ measurements.next_page_number }}&{{ request.GET.urlencode }}">Następna ➡</a>
+                    <a href="?page={{ measurements.paginator.num_pages }}&{{ request.GET.urlencode }}">Ostatnia ⏭</a>
+                {% endif %}
+            {% endif %}
+        </div>
     {% else %}
         <p>Brak pomiarów dla tego systemu.</p>
     {% endif %}
+
+    <!-- Dodawanie symulowanego czujnika -->
+    <h3>Symulacja czujnika</h3>
+    <form method="POST" action="{% url 'add_sensor' system.id %}">
+        {% csrf_token %}
+        <button type="submit">Dodaj symulowany czujnik</button>
+    </form>
+
+    <!-- Usuwanie systemu -->
+    <h3>Usuń ten system</h3>
+    <form method="POST" action="{% url 'delete_system' system.id %}">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć ten system?')">Usuń system</button>
+    </form>
 
     <a href="{% url 'dashboard' %}">Powrót do panelu</a>
 </body>
