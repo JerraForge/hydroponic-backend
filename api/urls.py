@@ -2,7 +2,6 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.routers import DefaultRouter
 
-# Importy widoków z aplikacji
 from .views import (
     RegisterView, UserView, dashboard_view,
     HydroponicSystemViewSet, MeasurementViewSet,
