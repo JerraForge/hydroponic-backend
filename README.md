@@ -1,125 +1,124 @@
 
 # Hydroponic System Management
 
-Aplikacja służy do zarządzania systemami hydroponicznymi, umożliwiając monitorowanie i kontrolowanie parametrów środowiskowych takich jak pH, temperatura, i TDS (total dissolved solids) w systemach hydroponicznych.
+This application is designed for managing hydroponic systems, allowing users to monitor and control environmental parameters such as pH, temperature, and TDS (Total Dissolved Solids) within hydroponic systems.
 
-## Opis
+## Overview
+This project enables:
 
-Projekt pozwala na:
-- Zarządzanie systemami hydroponicznymi w panelu administracyjnym.
-- Rejestrowanie nowych systemów hydroponicznych oraz ich edytowanie.
-- Monitorowanie parametrów takich jak pH, temperatura, i TDS za pomocą wbudowanego API.
-- Możliwość rejestracji użytkowników oraz zarządzania nimi przez administratora.
-- Zbieranie i przetwarzanie danych na temat warunków środowiskowych.
-- Uruchamianie aplikacji zarówno lokalnie, jak i w Dockerze.
+- Managing hydroponic systems via an admin panel.
+- Registering and editing hydroponic systems.
+- Monitoring parameters such as pH, temperature, and TDS through a built-in API.
+- User registration and management by administrators.
+- Collecting and processing environmental data.
+- Running the application locally or in Docker.
 
-## Funkcjonalności
+## Features
 
-### Panel Administratora
-W panelu administracyjnym można:
-- **Zarządzać systemami hydroponicznymi**: Administrator może dodawać nowe systemy, edytować istniejące lub usuwać je.
-- **Zarządzać użytkownikami**: Administrator ma dostęp do pełnej listy użytkowników, może edytować ich dane oraz usuwać konta.
-- **Przegląd danych**: Monitorowanie i przegląd parametrów takich jak pH, temperatura i TDS.
+### Admin Panel
+The admin panel allows administrators to:
+
+- **Manage Hydroponic Systems**: Add, edit, or delete hydroponic systems.
+- **User Management**: View and edit user data, delete user accounts.
+- **Data Monitoring**: Monitor and view system parameters such as pH, temperature, and TDS.
+
+### Users
+Registered users can:
+
+- **Log in**: Access their personal accounts.
+- **Manage Hydroponic Systems**: View and manage their own hydroponic systems and their parameters.
+- **Observe Data**: Monitor environmental data for their systems.
   
-### Użytkownicy
-- **Zarejestrowani użytkownicy** mogą logować się, zarządzać swoimi systemami hydroponicznymi oraz obserwować dane.
-- **Superużytkownicy** mają pełny dostęp do aplikacji, w tym do zarządzania użytkownikami i systemami hydroponicznymi.
+Superusers have full access to the application, including managing both users and hydroponic systems.
 
-## Wymagania
+## Requirements
+To run this project, you will need:
 
-Aby uruchomić projekt, potrzebujesz:
-- **Docker** (opcjonalnie do uruchomienia w kontenerach)
-- **Python 3.10+**
-- **PostgreSQL** – baza danych do przechowywania danych o użytkownikach i systemach
-- **Django 5.x**
-- **Django REST Framework** – do obsługi API
-- **Pip** – do instalacji pakietów
+- Docker (optional, for containerized deployment)
+- Python 3.10+
+- PostgreSQL (for storing user and system data)
+- Django 5.x
+- Django REST Framework (for API handling)
+- Pip (for package management)
 
-## Instalacja
+## Installation
 
-### 1. Instalacja lokalna
+### 1. Local Installation
+To install the project locally:
 
-1. **Sklonuj repozytorium:**
+1. Clone the repository:
+
    ```bash
-   git clone https://github.com/TwojeRepozytorium/hydroponic-system.git
+   git clone https://github.com/YourRepo/hydroponic-system.git
    cd hydroponic-system
    ```
 
-2. **Zainstaluj wymagane pakiety:**
-   Użyj poniższego polecenia, aby zainstalować wszystkie wymagane zależności.
+2. Install the required packages:
+
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Skonfiguruj bazę danych PostgreSQL:**
-   Upewnij się, że masz działającą bazę danych PostgreSQL. Możesz skonfigurować połączenie w pliku `settings.py` w sekcji `DATABASES`. Host bazy danych jest dynamicznie określany: jeśli aplikacja jest uruchamiana lokalnie, będzie to `localhost`, jeśli w Dockerze, używa `db` jako hosta.
+3. Configure PostgreSQL: Ensure you have a working PostgreSQL database. Configure the connection in the `settings.py` file under the `DATABASES` section. The database host is dynamically set based on the environment (localhost for local deployment, `db` for Docker deployment).
 
-4. **Wykonaj migracje:**
-   Zaktualizuj bazę danych, wykonując migracje.
+4. Run migrations to set up the database:
+
    ```bash
    python manage.py migrate
    ```
 
-5. **Utwórz superużytkownika:**
-   Aby móc zalogować się do panelu administracyjnego, utwórz konto superużytkownika:
+5. Create a superuser account for accessing the admin panel:
+
    ```bash
    python manage.py createsuperuser
    ```
-   Podczas tworzenia superużytkownika, system poprosi o podanie:
-   - Nazwy użytkownika
-   - Adresu e-mail
-   - Hasła
 
-6. **Uruchom serwer:**
-   Uruchom lokalny serwer Django:
+   You will be prompted to enter:
+   - Username
+   - Email address
+   - Password
+
+6. Start the Django development server:
+
    ```bash
    python manage.py runserver
    ```
 
-7. **Dostęp do aplikacji:**
-   Otwórz przeglądarkę i przejdź do [http://127.0.0.1:8000](http://127.0.0.1:8000), gdzie będzie dostępna aplikacja.
+7. Access the application: Open your browser and navigate to [http://127.0.0.1:8000/accounts/register](http://127.0.0.1:8000/accounts/register).
 
-### 2. Instalacja w Dockerze
+### 2. Docker Installation
+To run the application in Docker:
 
-1. **Zbuduj obrazy:**
-   Zbuduj obrazy Docker:
+1. Build the Docker images:
+
    ```bash
    docker-compose build
    ```
 
-2. **Uruchom kontenery:**
-   Uruchom aplikację i bazę danych w Dockerze:
+2. Start the containers (both the application and database):
+
    ```bash
    docker-compose up
    ```
 
-3. **Dostęp do aplikacji:**
-   Otwórz przeglądarkę i wejdź na [http://127.0.0.1:8000](http://127.0.0.1:8000), gdzie będzie dostępna aplikacja w kontenerze Docker.
+3. Access the application: Open your browser and go to [http://127.0.0.1:8000/accounts/register](http://127.0.0.1:8000/accounts/register) to access the app running in Docker.
 
-## Użycie aplikacji
+## Usage
 
-### Rejestracja i logowanie
+### Registration and Login
 
-1. **Rejestracja użytkownika:**
-   - Zarejestruj się w aplikacji, podając adres e-mail oraz hasło.
-   - Po udanej rejestracji możesz zalogować się na swoje konto.
+- **User Registration**: Register by providing an email address and password. Once registered, you can log in to your account.
+  
+- **Admin Login**: Log in to the admin panel using the superuser credentials at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin).
 
-2. **Logowanie do panelu admina:**
-   - Zaloguj się do panelu admina, używając utworzonego konta superużytkownika:
-   - Adres URL: [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+### Admin Panel
+After logging in as an admin, you can:
 
-### Panel Administratora
+- **Manage Hydroponic Systems**: Add new systems, edit existing ones, or delete systems.
+- **Manage Users**: View and edit user accounts, delete users if necessary.
+- **View Data**: Monitor system parameters such as pH, temperature, and TDS.
 
-Po zalogowaniu jako admin, będziesz miał dostęp do następujących opcji:
+### User Panel
+Registered users can:
 
-1. **Zarządzanie systemami hydroponicznymi**: Dodawanie nowych systemów, edytowanie istniejących, usuwanie systemów.
-2. **Zarządzanie użytkownikami**: Przegląd użytkowników, edytowanie ich danych oraz usuwanie kont.
-3. **Przegląd danych**: Przegląd danych dotyczących systemów hydroponicznych (np. pH, temperatura, TDS).
-
-### Panel Użytkownika
-
-Zalogowani użytkownicy mogą:
-- **Przeglądać systemy hydroponiczne**: Wyświetlanie dostępnych systemów, ich parametrów i stanu.
-
-
-
+- **View Hydroponic Systems**: Display available systems, their parameters, and current status.
