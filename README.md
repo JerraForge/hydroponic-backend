@@ -122,3 +122,13 @@ After logging in as an admin, you can:
 Registered users can:
 
 - **View Hydroponic Systems**: Display available systems, their parameters, and current status.
+
+## Known Issues and Future Improvements
+
+### Known Issues:
+- **Admin Panel Display Issues in Docker**: When running the application in Docker, the admin panel is functional but does not display correctly.
+
+### Planned Improvements:
+- **Refactor views.py for SOLID Principles**: The `views.py` file will be refactored to adhere to the SOLID design principles for better maintainability and readability.
+- **Unit Tests**: Adding unit tests to improve code coverage and ensure better reliability.
+  
